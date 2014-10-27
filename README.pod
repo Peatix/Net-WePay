@@ -1,0 +1,100 @@
+=head1 SYNOPSIS
+
+  my $wepay = Net::WePay->new(
+      access_token  => 'Access Token of your merchant'
+  );
+
+  my $response_body_hash = $wepay->call(
+      '/checkout/create'
+      , account_id        => 'Account ID of your merchant'
+      , short_description => 'Gorgeous LED TV 50 inch'
+      , type              => 'GOODS'
+      , amount            => '5999.99'
+  );
+
+  my $checkout_id = $response_body_hash->{ checkout_id };
+
+See Net::WePay::OAuth2 for how the module helps getting an access_token
+on behalf of your merchant.
+
+=head1 DESCRIPTION
+
+This module is a bunch of helper methods that does most of the
+heavy liftings required to call WePay API v2.
+
+=head1 METHODS
+
+=head2 new
+
+( access_token => ..., is_production => ..., )
+
+=head2 call
+
+($api_path, %params )
+
+=head1 LICENSE
+
+This module is licensed under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Fumiaki Yoshimatsu
+
+=head1 SEE ALSO
+
+=head1 SYNOPSIS
+
+  my $wepay_oauth2 = Net::WePay::OAuth2->new(
+      client_id       => 'Your App\'s client id'
+      , client_secret => 'Your App\'s client secret'
+      , redirect_uri  => URI->new( 'http://your-oauth-call-back-endpoint' )
+      , is_production => 0 # decides which WePay endpoint to go
+  );
+
+  my $uri = $wepay_oauth2->get_authorize_uri(
+      permissions  => [ 'manage_accounts', 'collect_payments' ]
+      , user_name  => 'Merchant\'s name'
+      , user_email => 'Merchant\'s email'
+      , state      => 'surfin csrf'
+  );
+
+  $res->redirect( $uri );
+
+  ...
+
+  my $code = $req->params->{ code }; # in OAuth2 response
+  my $access_token_info = $wepay_oauth2->get_token_from_code(
+      $code
+  );
+
+See Net::WePay for how the module helps calling WePay API.
+
+=head1 DESCRIPTION
+
+This module is a bunch of helper methods that does most of the
+heavy liftings required to call WePay API v2.
+
+=head1 METHODS
+
+=head2 new
+
+( client_id => ..., client_secret => ..., redirect_uri => ..., is_production => ..., )
+
+=head2 get_authorize_uri
+
+( \@permissions, %( user_email => ..., user_name => ... ) )
+
+=head2 get_token_from_code
+
+( $code )
+
+=head1 LICENSE
+
+This module is licensed under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Fumiaki Yoshimatsu
+
+=head1 SEE ALSO
+
