@@ -92,7 +92,10 @@ sub get_token_from_code {
         return $ret;
     }
     else {
-        die sprintf( '%s %s', $response->code, $response->decoded_content );
+        my $ret = eval { decode_json( $response->decoded_content ); };
+        $ret and
+            return $ret;
+        $ret = { error => 'unknown_error', error_code => $response->code, error_description => $response->decoded_content };
     }
 }
 
